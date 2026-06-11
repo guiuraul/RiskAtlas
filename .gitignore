@@ -42,3 +42,9 @@ next-env.d.ts
 
 # intellij
 .idea
+
+#supabase
+/supabase
+
+#drizzle
+/drizzle

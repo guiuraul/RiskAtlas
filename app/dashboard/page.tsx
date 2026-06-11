@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { BarChart3, DatabaseZap, LockKeyhole } from "lucide-react";
 
@@ -50,6 +51,18 @@ export default async function DashboardPage() {
             <div className="hidden rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-3 text-sm text-slate-300 md:block">
               Next: CSV import and portfolio rules
             </div>
+            <Link
+              href="/imports"
+              className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white transition hover:bg-white/10"
+            >
+              Import CSV
+            </Link>
+            <Link
+              href="/portfolio-setup"
+              className="inline-flex items-center justify-center rounded-2xl border border-cyan-300/30 bg-cyan-300/15 px-4 py-3 text-sm text-white transition hover:bg-cyan-300/20"
+            >
+              New portfolio
+            </Link>
             <SignOutForm />
           </div>
         </header>
