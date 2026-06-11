@@ -31,6 +31,13 @@ Build a private insurance portfolio management system where each user:
   - an initial import service that parses and inserts CSV rows
 - The first database migration has been generated.
 - The initial CSV upload page and portfolio setup page are in place.
+- The import page now includes:
+  - strict header validation for the reviewer CSV format
+  - clear validation errors with details
+  - a downloadable CSV template for non-technical users
+- Row-level security policies have been prepared for the main user-owned tables.
+- The portfolio setup page now uses real dropdown/search controls and shows saved portfolios.
+- The dashboard now reads saved portfolios and shows the first analytics cards/charts for the selected portfolio.
 
 ## What Is Not Done Yet
 
@@ -42,11 +49,10 @@ Build a private insurance portfolio management system where each user:
   - claims
   - portfolios
   - portfolio rules / filters
-- No row-level security policies have been added yet in the database.
+- No row-level security policies have been applied yet in the live database.
 - No upload storage flow exists yet for persisting source CSVs.
-- No portfolio selection or dashboard filtering exists yet.
-- No charts or analytics widgets exist yet.
-- No per-user data isolation layer beyond Supabase auth is implemented yet.
+- No deeper analytics beyond the first totals/charts layer has been built yet.
+- No per-user data isolation layer beyond Supabase auth is implemented yet in the live database.
 
 ## CSV Format Confirmed
 
@@ -92,6 +98,7 @@ The first supported import format will be the provided `insurance_claims.csv` sa
    - Add portfolio selection.
    - Render totals, trends, and distributions.
    - Use chart types appropriate for the selected filters.
+   - Wire the selector to URL state and compute filtered analytics.
 
 6. Tighten authorization and isolation.
    - Ensure every query is scoped to the signed-in user.
@@ -117,3 +124,6 @@ The first supported import format will be the provided `insurance_claims.csv` sa
 - 2026-06-11: Captured the four insurance group 39 reference pages for make/model mapping.
 - 2026-06-11: Implemented the first CSV parsing/mapping layer, Drizzle schema, and import service.
 - 2026-06-11: Generated the first Drizzle migration and added the CSV import and portfolio setup screens.
+- 2026-06-11: Added strict CSV header validation, friendly import errors, and a downloadable template.
+- 2026-06-11: Added row-level security SQL, authenticated user-context helpers, and saved portfolio listing.
+- 2026-06-11: Added dashboard portfolio selection and the first filtered analytics cards/charts.
