@@ -1,59 +1,66 @@
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import type { ReactNode } from "react";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { SiteFooter } from "@/components/site-footer";
+
+type AuthPanelItem = {
+  title: string;
+  text: string;
+};
 
 type AuthShellProps = {
-  eyebrow: string;
   title: string;
   description: string;
+  panelLabel: string;
+  panelTitle: string;
+  panelDescription: string;
+  panelItems?: AuthPanelItem[];
   children: ReactNode;
   footer: ReactNode;
 };
 
 export function AuthShell({
-  eyebrow,
   title,
   description,
+  panelLabel,
+  panelTitle,
+  panelDescription,
+  panelItems = [],
   children,
   footer,
 }: AuthShellProps) {
   return (
     <div className="relative min-h-screen overflow-hidden px-4 py-6 sm:px-6 lg:px-8">
-      <div className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-7xl flex-col justify-between gap-8">
-        <header className="flex items-center justify-between gap-4">
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(45,212,191,0.22),transparent_28%),radial-gradient(circle_at_top_right,rgba(251,191,36,0.18),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.12),transparent_28%)]" />
+      <div className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-7xl flex-col gap-8">
+        <header className="flex flex-col gap-4 border-b border-white/10 pb-5 sm:flex-row sm:items-center sm:justify-between">
           <Link href="/" className="group flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-cyan-300/30 bg-cyan-300/15 text-cyan-50 shadow-lg shadow-cyan-400/10">
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-sm font-semibold tracking-[0.22em] text-cyan-100 uppercase">
-                RiskAtlas
+              <p className="text-sm font-semibold tracking-[0.24em] text-cyan-100 uppercase">
+                Risk Atlas
               </p>
-              <p className="text-xs text-slate-300">Insurance analytics workspace</p>
+              <p className="text-xs text-slate-300">Private insurance portfolio tracking</p>
             </div>
           </Link>
 
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm transition hover:bg-white/10"
-            style={{ color: "#ffffff" }}
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-white/8 bg-white/4 px-5 text-sm font-medium text-white/85 transition hover:bg-white/8 hover:text-white"
+            style={{ color: "#fff" }}
           >
             Back home
             <ArrowRight className="h-4 w-4" />
           </Link>
         </header>
 
-        <main className="grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-          <section className="space-y-6">
-            <span className="inline-flex items-center gap-2 rounded-full border border-amber-300/20 bg-amber-300/10 px-4 py-2 text-xs font-medium text-amber-50">
-              <Sparkles className="h-3.5 w-3.5" />
-              {eyebrow}
-            </span>
-
-            <div className="max-w-2xl space-y-4">
-              <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+        <main className="grid flex-1 gap-8 lg:grid-cols-[minmax(0,1.12fr)_minmax(320px,0.88fr)] lg:items-center">
+          <section className="space-y-8 pt-6 lg:pt-10">
+            <div className="max-w-3xl space-y-5">
+              <h1 className="max-w-2xl text-4xl font-semibold leading-[0.96] tracking-tight text-white sm:text-5xl lg:text-6xl">
                 {title}
               </h1>
               <p className="max-w-xl text-base leading-7 text-slate-300 sm:text-lg">
@@ -61,46 +68,54 @@ export function AuthShell({
               </p>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-3">
-              <Card className="bg-white/6">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-base">Age check</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <CardDescription>
-                    We block registration unless the user is at least 18.
-                  </CardDescription>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white/6">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-base">Supabase auth</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <CardDescription>
-                    Cookie-based sessions keep the app deployable on Vercel.
-                  </CardDescription>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white/6">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-base">Ready to expand</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <CardDescription>
-                    This foundation will later power CSV imports and portfolio dashboards.
-                  </CardDescription>
-                </CardContent>
-              </Card>
+            <div className="flex flex-wrap gap-2 text-xs font-medium tracking-wide text-slate-300/80">
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
+                Private to your account
+              </span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
+                Easy to review
+              </span>
             </div>
           </section>
 
-          <section>{children}</section>
+          <section className="pt-2 lg:justify-self-end">
+            <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 p-5 shadow-2xl shadow-black/20 backdrop-blur">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(251,191,36,0.1),transparent_36%)]" />
+              <div className="relative space-y-5">
+                <div>
+                  <p className="text-xs font-semibold tracking-[0.24em] text-cyan-100 uppercase">
+                    {panelLabel}
+                  </p>
+                  <p className="mt-2 text-lg font-medium text-white">{panelTitle}</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">{panelDescription}</p>
+                </div>
+
+                {panelItems.length > 0 ? (
+                  <div className="space-y-3">
+                    {panelItems.map((item, index) => (
+                      <div
+                        key={item.title}
+                        className="flex items-start gap-3 rounded-2xl border border-white/10 bg-slate-950/35 px-4 py-3"
+                      >
+                        <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-cyan-200/20 bg-cyan-300/15 text-[11px] font-semibold text-white">
+                          {index + 1}
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-white">{item.title}</p>
+                          <p className="mt-1 text-sm leading-6 text-slate-300">{item.text}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+
+                <div className="pt-1">{children}</div>
+              </div>
+            </div>
+          </section>
         </main>
 
-        <footer className="pb-2 text-sm text-slate-400">{footer}</footer>
+        <SiteFooter>{footer}</SiteFooter>
       </div>
     </div>
   );
