@@ -26,6 +26,7 @@ export type PortfolioAnalytics = {
   totalInjuryClaim: number;
   totalPropertyClaim: number;
   totalVehicleClaim: number;
+  monthlyTotals: PortfolioAnalyticsSeriesItem[];
   yearlyTotals: PortfolioAnalyticsSeriesItem[];
   makeBreakdown: PortfolioAnalyticsSeriesItem[];
   stateBreakdown: PortfolioAnalyticsSeriesItem[];
@@ -41,9 +42,9 @@ function toNumber(value: string | number | null | undefined) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
-function parseIncidentYear(value: string | Date) {
+function parseIncidentDate(value: string | Date) {
   const dateValue = value instanceof Date ? value : new Date(value);
-  return Number.isNaN(dateValue.getTime()) ? null : dateValue.getFullYear();
+  return Number.isNaN(dateValue.getTime()) ? null : dateValue;
 }
 
 function buildBreakdown(rows: Array<Record<string, unknown>>, field: string) {
@@ -61,27 +62,77 @@ function buildBreakdown(rows: Array<Record<string, unknown>>, field: string) {
     .slice(0, 6);
 }
 
+function buildMonthlyTotals(rows: Array<Record<string, unknown>>) {
+  const grouped = new Map<
+    string,
+    {
+      label: string;
+      value: number;
+      sortValue: number;
+    }
+  >();
+
+  for (const row of rows) {
+    const dateValue = parseIncidentDate(row.incidentDate as string | Date);
+    if (!dateValue) {
+      continue;
+    }
+
+    const year = dateValue.getUTCFullYear();
+    const month = dateValue.getUTCMonth();
+    const key = `${year}-${String(month + 1).padStart(2, "0")}`;
+    const current =
+      grouped.get(key) ??
+      {
+        label: new Intl.DateTimeFormat("en-US", {
+          month: "short",
+          year: "numeric",
+          timeZone: "UTC",
+        }).format(new Date(Date.UTC(year, month, 1))),
+        value: 0,
+        sortValue: Date.UTC(year, month, 1),
+      };
+    current.value += toNumber(row.totalClaimAmount as string | number);
+    grouped.set(key, current);
+  }
+
+  return Array.from(grouped.values())
+    .sort((left, right) => left.sortValue - right.sortValue)
+    .map(({ sortValue, ...item }) => item);
+}
+
 function buildYearlyTotals(rows: Array<Record<string, unknown>>) {
   const grouped = new Map<
     string,
     {
       label: string;
       value: number;
+      sortValue: string;
     }
   >();
 
   for (const row of rows) {
-    const year = parseIncidentYear(row.incidentDate as string | Date);
-    if (!year) {
+    const dateValue = parseIncidentDate(row.incidentDate as string | Date);
+    if (!dateValue) {
       continue;
     }
 
-    const current = grouped.get(String(year)) ?? { label: String(year), value: 0 };
+    const year = dateValue.getUTCFullYear();
+    const key = String(year);
+    const current =
+      grouped.get(key) ??
+      {
+        label: key,
+        value: 0,
+        sortValue: key,
+      };
     current.value += toNumber(row.totalClaimAmount as string | number);
-    grouped.set(String(year), current);
+    grouped.set(key, current);
   }
 
-  return Array.from(grouped.values()).sort((left, right) => Number(left.label) - Number(right.label));
+  return Array.from(grouped.values())
+    .sort((left, right) => left.sortValue.localeCompare(right.sortValue))
+    .map(({ sortValue, ...item }) => item);
 }
 
 export async function getPortfolioAnalytics(
@@ -142,6 +193,7 @@ export async function getPortfolioAnalytics(
       totalInjuryClaim,
       totalPropertyClaim,
       totalVehicleClaim,
+      monthlyTotals: buildMonthlyTotals(rows),
       yearlyTotals: buildYearlyTotals(rows),
       makeBreakdown: buildBreakdown(rows as Array<Record<string, unknown>>, "autoMake"),
       stateBreakdown: buildBreakdown(rows as Array<Record<string, unknown>>, "incidentState"),

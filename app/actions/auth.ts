@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import {
   initialAuthState,
   isAtLeast18,
+  isAtMost100,
   signInSchema,
   signUpSchema,
   type AuthFormState,
@@ -52,6 +53,15 @@ export async function signUpAction(
     return buildErrorState("You must be at least 18 years old to register.", {
       birthDate: ["You must be at least 18 years old to register."],
     });
+  }
+
+  if (!isAtMost100(parsed.data.birthDate)) {
+    return buildErrorState(
+      "You must be 100 years old or younger to register.",
+      {
+        birthDate: ["You must be 100 years old or younger to register."],
+      }
+    );
   }
 
   const supabase = await createSupabaseServerClient();

@@ -1,6 +1,6 @@
 # RiskAtlas Progress
 
-Last updated: 2026-06-11
+Last updated: 2026-06-12
 
 ## Goal
 
@@ -35,24 +35,19 @@ Build a private insurance portfolio management system where each user:
   - strict header validation for the reviewer CSV format
   - clear validation errors with details
   - a downloadable CSV template for non-technical users
-- Row-level security policies have been prepared for the main user-owned tables.
-- The portfolio setup page now uses real dropdown/search controls and shows saved portfolios.
-- The dashboard now reads saved portfolios and shows the first analytics cards/charts for the selected portfolio.
+- Row-level security policies have been prepared and applied for the main user-owned tables.
+- The app now scopes database work through a user-context transaction helper so reads and writes stay tied to the signed-in user.
+- The portfolio setup page now uses real dropdown/search controls and saves portfolio definitions per user.
+- The dashboard now reads saved portfolios, defaults to the first saved group, and shows the first analytics cards/charts for the selected portfolio.
+- The dashboard trend charts now show monthly and yearly claim evolution, plus distribution cards for state, gender, and makes.
+- The current UI direction is intentionally minimalistic and aimed at non-technical insurance reviewers.
 
 ## What Is Not Done Yet
 
-- No database schema has been created yet for:
-  - users
-  - uploads
-  - policies
-  - incidents
-  - claims
-  - portfolios
-  - portfolio rules / filters
-- No row-level security policies have been applied yet in the live database.
+- The data model is still a vertical-slice schema, not a fully normalized production model split into separate users, uploads, policies, incidents, and claims tables.
 - No upload storage flow exists yet for persisting source CSVs.
 - No deeper analytics beyond the first totals/charts layer has been built yet.
-- No per-user data isolation layer beyond Supabase auth is implemented yet in the live database.
+- No admin or review tooling exists yet for monitoring imports and user data quality.
 
 ## CSV Format Confirmed
 
@@ -72,39 +67,22 @@ The first supported import format will be the provided `insurance_claims.csv` sa
 
 ## Recommended Next Steps
 
-1. Define the data model.
-   - Decide the canonical tables and fields for policies, incidents, claims, portfolios, and imports.
-   - Confirm which fields are required versus optional.
-   - Define how each portfolio is expressed as saved filter criteria.
+1. Decide whether to normalize the data model further.
+   - Split or keep the current vertical-slice tables for imports, claims, and portfolios.
+   - Confirm which fields must remain first-class in the schema.
+   - Decide whether cached aggregates are needed later.
 
-2. Set up the persistence layer.
-   - Add Drizzle ORM.
-   - Add the database connection and schema files.
-   - Prepare migrations for Supabase Postgres.
-   - Add row-level security policies in Supabase.
+2. Optional: add source-file storage for imports.
+   - Persist uploaded CSVs instead of only parsing them in memory.
+   - Keep the reviewer template and validation flow intact.
+   - Add a clearer import history story for non-technical users.
 
-3. Design the CSV ingestion flow.
-   - Decide whether upload happens directly in the UI or via a staged import flow.
-   - Define CSV headers and validation rules.
-   - Map imported rows to the schema, including the derived `_c39` field.
-   - Add file upload UI and storage integration.
+3. Extend analytics beyond the first dashboard slice.
+   - Add richer trend views and more distribution breakdowns if they help reviewers.
+   - Keep the chart set simple and readable.
+   - Favor insights that help an insurance agent interpret the portfolio quickly.
 
-4. Build portfolio setup.
-   - Create a page for naming portfolios and choosing criteria.
-   - Support dropdown/search inputs for state, brand, incident year, gender, and amount threshold.
-   - Save the portfolio definition per user.
-
-5. Build the dashboard.
-   - Add portfolio selection.
-   - Render totals, trends, and distributions.
-   - Use chart types appropriate for the selected filters.
-   - Wire the selector to URL state and compute filtered analytics.
-
-6. Tighten authorization and isolation.
-   - Ensure every query is scoped to the signed-in user.
-   - Prevent cross-user visibility in both reads and mutations.
-
-7. Add QA and deployment checks.
+4. Add QA and deployment checks.
    - Validate the flow locally.
    - Confirm Vercel/Supabase environment variables and production readiness.
 
@@ -113,7 +91,7 @@ The first supported import format will be the provided `insurance_claims.csv` sa
 - Should imports be synchronous for small files and asynchronous for larger ones?
 - Do portfolios store only the filter definition, or also cached aggregates?
 - Which fields are mandatory in the first version of the dashboard?
-- Should the first dashboard focus on claims, policies, or both together?
+- Should the first dashboard stay claims-only, or also introduce policy-level views later?
 
 ## Working Log
 
@@ -127,3 +105,8 @@ The first supported import format will be the provided `insurance_claims.csv` sa
 - 2026-06-11: Added strict CSV header validation, friendly import errors, and a downloadable template.
 - 2026-06-11: Added row-level security SQL, authenticated user-context helpers, and saved portfolio listing.
 - 2026-06-11: Added dashboard portfolio selection and the first filtered analytics cards/charts.
+- 2026-06-12: Updated the dashboard trend charts to use monthly and yearly analytics for better alignment with the brief.
+- 2026-06-12: Added a runtime guard to the user-context helper so scoped database work cannot run without a signed-in user id.
+- 2026-06-12: Refreshed this tracker so it reflects the current vertical slice and the remaining product gaps more accurately.
+- 2026-06-12: Removed dashboard URL state and made the first saved group the default local selection.
+- 2026-06-12: Added a claim-value mix pie chart for injury, property, and vehicle claim composition.

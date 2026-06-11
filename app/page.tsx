@@ -4,6 +4,8 @@ import {
   ShieldCheck
 } from "lucide-react";
 
+import { SignOutForm } from "@/components/auth/sign-out-form";
+import { SiteFooter } from "@/components/site-footer";
 import { getCurrentUser } from "@/lib/supabase/server";
 
 export default async function Home() {
@@ -28,32 +30,35 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2">
             {user ? (
-              <Link
-                href="/dashboard"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-cyan-200/35 bg-cyan-300/20 px-5 text-sm font-medium text-white shadow-sm shadow-cyan-500/10 transition hover:bg-cyan-300/25"
-                style={{ color: "#fff" }}
-              >
-                Open dashboard
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+              <>
+                <Link
+                  href="/dashboard"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-cyan-200/35 bg-cyan-300/20 px-4 text-sm font-medium text-white shadow-sm shadow-cyan-500/10 transition hover:bg-cyan-300/25"
+                  style={{ color: "#fff" }}
+                >
+                  Dashboard
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <SignOutForm className="px-4 text-sm" />
+              </>
             ) : (
               <>
                 <Link
-                  href="/sign-in"
-                  className="inline-flex h-11 items-center justify-center rounded-full border border-white/8 bg-white/4 px-5 text-sm font-medium text-white/85 transition hover:bg-white/8 hover:text-white"
-                  style={{ color: "#fff" }}
-                >
-                  Sign in
-                </Link>
-                <Link
                   href="/sign-up"
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-cyan-200/35 bg-cyan-300/20 px-5 text-sm font-medium text-white shadow-sm shadow-cyan-500/10 transition hover:bg-cyan-300/25"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-cyan-200/35 bg-cyan-300/25 px-5 text-sm font-medium text-white shadow-sm shadow-cyan-500/10 transition hover:bg-cyan-300/30"
                   style={{ color: "#fff" }}
                 >
                   Create account
                   <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                    href="/sign-in"
+                    className="inline-flex h-11 items-center justify-center rounded-full border border-white/8 bg-slate-900/55 px-5 text-sm font-medium text-white/90 transition hover:bg-slate-800/70 hover:text-white"
+                    style={{ color: "#fff" }}
+                >
+                  Sign in
                 </Link>
               </>
             )}
@@ -64,11 +69,11 @@ export default async function Home() {
           <section className="space-y-8 pt-6 lg:pt-10">
             <div className="max-w-3xl space-y-5">
               <h1 className="max-w-2xl text-4xl font-semibold leading-[0.96] tracking-tight text-white sm:text-5xl lg:text-6xl">
-                See your insurance claims in one clean place.
+                See your insurance claims in one clean place
               </h1>
               <p className="max-w-xl text-base leading-7 text-slate-300 sm:text-lg">
                 Upload your data, save the groups you care about, and compare totals, trends, and
-                distributions without the clutter.
+                distributions without the clutter
               </p>
             </div>
 
@@ -91,7 +96,7 @@ export default async function Home() {
                     How it works
                   </p>
                   <p className="mt-2 text-lg font-medium text-white">
-                    A simple flow for everyone.
+                    A simple flow for everyone
                   </p>
                 </div>
 
@@ -99,15 +104,15 @@ export default async function Home() {
                   {[
                     {
                       title: "Upload your file",
-                      text: "Start with the provided format and bring your claims in safely.",
+                      text: "Start with the provided format and bring your claims in safely",
                     },
                     {
                       title: "Choose a portfolio",
-                      text: "Group the cases you want to compare by the criteria that matter to you.",
+                      text: "Group the cases you want to compare by the criteria that matter to you",
                     },
                     {
                       title: "Review the results",
-                      text: "Switch between portfolios and see totals and charts update right away.",
+                      text: "Switch between portfolios and see totals and charts update right away",
                     },
                   ].map((item, index) => (
                     <div
@@ -129,9 +134,7 @@ export default async function Home() {
           </section>
         </main>
 
-        <footer className="pb-1 pt-4 text-xs text-slate-400/70">
-          Built for private insurance portfolio analysis.
-        </footer>
+        <SiteFooter>Built for private insurance portfolio analysis</SiteFooter>
       </div>
     </div>
   );

@@ -13,10 +13,12 @@ export default async function SignInPage() {
 
   return (
     <AuthShell
-      eyebrow="Private access"
-      title="Sign in to your insurance analytics dashboard."
-      description="Only authenticated users can access the next steps of the product, keeping each portfolio isolated."
-      footer="If Supabase email confirmations are enabled, verify your email first before signing in."
+      title="Welcome back"
+      description="Sign in to review your saved portfolios and pick up where you left off"
+      panelLabel="Sign in"
+      panelTitle="Continue where you left off"
+      panelDescription="Open your saved work, switch between portfolios, and pick up the review in seconds"
+      footer="Built for private insurance portfolio analysis"
     >
       <SignInForm />
     </AuthShell>

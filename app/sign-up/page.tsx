@@ -13,10 +13,12 @@ export default async function SignUpPage() {
 
   return (
     <AuthShell
-      eyebrow="Manual 18+ validation"
-      title="Create a private account for your portfolio workspace."
-      description="This first step gives you a secure account flow and enforces the minimum age rule before Supabase creates the user."
-      footer="After signup, the same account will be used for private CSV imports, portfolios, and dashboards."
+      title="Create your account"
+      description="Set up a private workspace for your insurance portfolios"
+      panelLabel="Get started"
+      panelTitle="Set up your workspace in a few minutes"
+      panelDescription="Create your account, save your first portfolio, and come back whenever you need to review the results"
+      footer="Built for private insurance portfolio analysis."
     >
       <SignUpForm />
     </AuthShell>
