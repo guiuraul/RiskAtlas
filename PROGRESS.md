@@ -29,10 +29,11 @@ Build a private insurance portfolio management system where each user:
   - a mapper that derives `_c39`
   - a Drizzle schema for imports, portfolios, and claim records
   - an initial import service that parses and inserts CSV rows
+- The first database migration has been generated.
+- The initial CSV upload page and portfolio setup page are in place.
 
 ## What Is Not Done Yet
 
-- No database schema has been created yet for:
 - No database schema has been created yet for:
   - users
   - uploads
@@ -41,9 +42,8 @@ Build a private insurance portfolio management system where each user:
   - claims
   - portfolios
   - portfolio rules / filters
-- No Drizzle migrations have been generated yet.
-- No upload UI exists yet for importing files from the browser.
-- No portfolio builder UI exists yet.
+- No row-level security policies have been added yet in the database.
+- No upload storage flow exists yet for persisting source CSVs.
 - No portfolio selection or dashboard filtering exists yet.
 - No charts or analytics widgets exist yet.
 - No per-user data isolation layer beyond Supabase auth is implemented yet.
@@ -75,6 +75,7 @@ The first supported import format will be the provided `insurance_claims.csv` sa
    - Add Drizzle ORM.
    - Add the database connection and schema files.
    - Prepare migrations for Supabase Postgres.
+   - Add row-level security policies in Supabase.
 
 3. Design the CSV ingestion flow.
    - Decide whether upload happens directly in the UI or via a staged import flow.
@@ -115,3 +116,4 @@ The first supported import format will be the provided `insurance_claims.csv` sa
 - 2026-06-11: Confirmed the first CSV import format and noted the derived `_c39` rule.
 - 2026-06-11: Captured the four insurance group 39 reference pages for make/model mapping.
 - 2026-06-11: Implemented the first CSV parsing/mapping layer, Drizzle schema, and import service.
+- 2026-06-11: Generated the first Drizzle migration and added the CSV import and portfolio setup screens.

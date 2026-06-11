@@ -22,8 +22,25 @@ export async function processInsuranceClaimsCsv({
   userId: string;
   fileName: string;
 }): Promise<ProcessInsuranceClaimsResult> {
-  const rows = parseInsuranceClaimsCsv(csvText);
+  console.log("[imports] start", {
+    userId,
+    fileName,
+    csvLength: csvText.length,
+  });
 
+  const rows = parseInsuranceClaimsCsv(csvText);
+  console.log("[imports] parsed rows", {
+    rowCount: rows.length,
+    sample: rows[0]
+      ? {
+          auto_make: rows[0].auto_make,
+          auto_model: rows[0].auto_model,
+          _c39: rows[0]._c39,
+        }
+      : null,
+  });
+
+  console.log("[imports] inserting import record");
   const [importRecord] = await db
     .insert(imports)
     .values({
@@ -37,17 +54,26 @@ export async function processInsuranceClaimsCsv({
     .returning({ id: imports.id });
 
   if (!importRecord) {
+    console.error("[imports] import record insert returned no row");
     throw new Error("Unable to create import record.");
   }
+
+  console.log("[imports] import record created", {
+    importId: importRecord.id,
+  });
 
   const insertRows = rows.map((row) =>
     mapInsuranceClaimToInsert(toInsuranceClaimImportInput(row), userId, importRecord.id)
   );
 
   if (insertRows.length > 0) {
+    console.log("[imports] inserting claim records", {
+      insertCount: insertRows.length,
+    });
     await db.insert(claimRecords).values(insertRows);
   }
 
+  console.log("[imports] updating import status to completed");
   await db
     .update(imports)
     .set({
@@ -63,4 +89,3 @@ export async function processInsuranceClaimsCsv({
     insertedRows: insertRows.length,
   };
 }
-

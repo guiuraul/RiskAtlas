@@ -86,7 +86,7 @@ export const claimRecords = pgTable("claim_records", {
   autoModel: text("auto_model").notNull(),
   autoYear: integer("auto_year").notNull(),
   fraudReported: boolean("fraud_reported").notNull().default(false),
-  isGroup39: boolean("is_group_39").notNull().default(false),
+  _c39: boolean("_c39").notNull().default(false),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
