@@ -17,10 +17,19 @@ export function ImportClaimsForm() {
   );
 
   return (
-    <form action={action} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="file">CSV file</Label>
-        <Input id="file" name="file" type="file" accept=".csv,text/csv" required />
+    <form action={action} className="space-y-3">
+      <div className="space-y-1.5">
+        <Label htmlFor="file" className="text-slate-100">
+          Claims file
+        </Label>
+        <Input
+          id="file"
+          name="file"
+          type="file"
+          accept=".csv,text/csv"
+          required
+          className="h-9 cursor-pointer rounded-2xl border-white/10 bg-slate-950/35 px-3 py-1.5 text-sm text-white file:mr-2 file:h-6 file:rounded-lg file:border-0 file:bg-cyan-300/15 file:px-3 file:text-[11px] file:font-medium file:text-white file:whitespace-nowrap placeholder:text-slate-500 focus:border-cyan-300/35"
+        />
       </div>
 
       {state.message ? (
@@ -43,7 +52,7 @@ export function ImportClaimsForm() {
         </div>
       ) : null}
 
-      <Button type="submit" disabled={pending}>
+      <Button type="submit" disabled={pending} className="h-10 w-full rounded-full">
         {pending ? "Importing..." : "Import CSV"}
       </Button>
     </form>

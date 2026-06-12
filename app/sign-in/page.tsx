@@ -18,7 +18,7 @@ export default async function SignInPage() {
       panelLabel="Sign in"
       panelTitle="Continue where you left off"
       panelDescription="Open your saved work, switch between portfolios, and pick up the review in seconds"
-      footer="Built for private insurance portfolio analysis"
+      footer="Built for private insurance portfolio analysis."
     >
       <SignInForm />
     </AuthShell>

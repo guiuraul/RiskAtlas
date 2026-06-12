@@ -4,6 +4,12 @@ import { CalendarDays, ChevronDown, Filter } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+const currencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  maximumFractionDigits: 0,
+});
+
 export type PortfolioSummary = {
   id: string;
   name: string;
@@ -26,7 +32,9 @@ function getFilterChips(filters: PortfolioSummary["filters"]) {
     filters.incidentState ? `Incident state: ${filters.incidentState}` : null,
     filters.autoMake ? `Make: ${filters.autoMake}` : null,
     filters.incidentYear ? `Year: ${filters.incidentYear}` : null,
-    filters.maxTotalClaimAmount ? `Max claims: $${filters.maxTotalClaimAmount}` : null,
+    filters.maxTotalClaimAmount
+      ? `Max claims: ${currencyFormatter.format(filters.maxTotalClaimAmount)}`
+      : null,
   ].filter(Boolean) as string[];
 }
 

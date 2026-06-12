@@ -20,6 +20,15 @@ const portfolioSchema = z.object({
   maxTotalClaimAmount: z.string().trim().optional(),
 });
 
+function parseCurrencyInput(value?: string | null) {
+  if (!value) {
+    return null;
+  }
+
+  const numericValue = value.replace(/[^0-9]/g, "");
+  return numericValue ? Number(numericValue) : null;
+}
+
 export async function createPortfolioAction(
   prevState: PortfolioActionState = initialPortfolioActionState,
   formData: FormData
@@ -59,9 +68,7 @@ export async function createPortfolioAction(
     incidentState: parsed.data.incidentState || null,
     autoMake: parsed.data.autoMake || null,
     incidentYear: parsed.data.incidentYear ? Number(parsed.data.incidentYear) : null,
-    maxTotalClaimAmount: parsed.data.maxTotalClaimAmount
-      ? Number(parsed.data.maxTotalClaimAmount)
-      : null,
+    maxTotalClaimAmount: parseCurrencyInput(parsed.data.maxTotalClaimAmount),
   };
 
   await withUserContext(user.id, async (tx) => {

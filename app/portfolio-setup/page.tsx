@@ -1,9 +1,11 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AppPageShell } from "@/components/app-page-shell";
 import { PortfolioList } from "@/components/portfolios/portfolio-list";
 import { PortfolioSetupForm } from "@/components/portfolios/portfolio-setup-form";
-import { getUserPortfolios } from "@/lib/portfolio/queries";
+import { getUserIncidentYears, getUserPortfolios } from "@/lib/portfolio/queries";
 import { getCurrentUser } from "@/lib/supabase/server";
 
 export default async function PortfolioSetupPage() {
@@ -14,35 +16,47 @@ export default async function PortfolioSetupPage() {
   }
 
   const portfolios = await getUserPortfolios(user.id);
+  const incidentYears = await getUserIncidentYears(user.id);
 
   return (
-    <div className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
-        <Card className="border-white/10 bg-white/6">
-          <CardHeader>
-            <CardTitle>Create a portfolio</CardTitle>
-            <CardDescription>
-              Save a filtered portfolio definition so the dashboard can render the right charts
-              for that slice of your claims data.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <PortfolioSetupForm />
-          </CardContent>
-        </Card>
-
-        <Card className="border-white/10 bg-white/6">
-          <CardHeader>
-            <CardTitle>Saved portfolios</CardTitle>
-            <CardDescription>
-              These records are persisted in Supabase and will be used by the dashboard selector.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <PortfolioList portfolios={portfolios} />
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    <AppPageShell
+      eyebrow="Portfolio setup"
+      title="Save a portfolio you can open again in seconds."
+      description="Choose the filters that matter, give the group a clear name, and keep it ready for the dashboard whenever you need it."
+      panelLabel="Portfolio setup"
+      panelTitle="Build a clear group"
+      panelDescription="Use filters that an insurance agent can understand at a glance."
+      heroTags={["Private to your account", "Simple filters", "Ready for the dashboard"]}
+      headerRight={
+        <>
+          <Link
+            href="/dashboard"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-cyan-200/35 bg-cyan-300/20 px-4 text-sm font-medium text-white shadow-sm shadow-cyan-500/10 transition hover:bg-cyan-300/25"
+            style={{ color: "#fff" }}
+          >
+            Dashboard
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link
+            href="/imports"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-white/8 bg-slate-900/55 px-4 text-sm font-medium text-white/90 transition hover:bg-slate-800/70 hover:text-white"
+            style={{ color: "#fff" }}
+          >
+            Imports
+          </Link>
+        </>
+      }
+      footer="Built for private insurance portfolio analysis."
+      leftBelow={
+        <section className="space-y-3">
+          <p className="text-xs font-semibold tracking-[0.24em] text-cyan-100 uppercase">
+            Saved portfolios
+          </p>
+          <PortfolioList portfolios={portfolios} />
+        </section>
+      }
+    >
+      <PortfolioSetupForm incidentYears={incidentYears} />
+    </AppPageShell>
   );
 }
