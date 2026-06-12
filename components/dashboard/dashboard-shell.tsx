@@ -106,11 +106,10 @@ export function DashboardShell({
               style={{ color: "#fff" }}
             >
               New portfolio
-              <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href="/imports"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-white/8 bg-slate-900/55 px-5 text-sm font-medium text-white/90 transition hover:bg-slate-800/70 hover:text-white"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-cyan-200/35 bg-cyan-300/20 px-4 text-sm font-medium text-white shadow-sm shadow-cyan-500/10 transition hover:bg-cyan-300/25"
               style={{ color: "#fff" }}
             >
               Import CSV

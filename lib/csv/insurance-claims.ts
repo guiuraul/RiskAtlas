@@ -146,15 +146,11 @@ function validateInsuranceClaimsHeaders(headers: string[]) {
   }
 
   const details = [
-    `Expected ${expectedHeaders.length} columns from insurance_claims.csv.`,
-    missing.length > 0 ? `Missing columns: ${missing.join(", ")}` : null,
-    unexpected.length > 0 ? `Unexpected columns: ${unexpected.join(", ")}` : null,
-    duplicates.length > 0 ? `Duplicate columns: ${Array.from(new Set(duplicates)).join(", ")}` : null,
-    "Download the CSV template from the import page and make sure the headers match exactly.",
+    "Download the CSV template from the import page and make sure the headers match exactly",
   ].filter((line): line is string => Boolean(line));
 
   throw new InsuranceClaimsCsvValidationError(
-    "The uploaded CSV does not match the expected insurance_claims.csv format.",
+    "The uploaded CSV does not match the expected format.",
     details
   );
 }

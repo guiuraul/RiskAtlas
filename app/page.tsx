@@ -134,7 +134,7 @@ export default async function Home() {
           </section>
         </main>
 
-        <SiteFooter>Built for private insurance portfolio analysis</SiteFooter>
+        <SiteFooter>Built for private insurance portfolio analysis.</SiteFooter>
       </div>
     </div>
   );
